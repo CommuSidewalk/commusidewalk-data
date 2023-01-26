@@ -1,5 +1,8 @@
 library(jsonlite)
 
+# create /data folder
+dir.create('data', showWarnings = FALSE)
+
 # create default filename based on timestamp
 current_time <- format(Sys.time(), '%Y%m%d')
 fname <- paste('./data/', current_time, '.csv', sep = '')

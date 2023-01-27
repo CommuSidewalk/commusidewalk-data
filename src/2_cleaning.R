@@ -74,9 +74,9 @@ lst_agree <- sapply(df$verification, function(x) {
     return <- NA
   }
 })
-df <-
-  cbind(df,
-        data.frame(verification_user = lst_user, verification_agree = lst_agree))
+df <- cbind(df,
+            data.frame(verification_user = lst_user,
+                       verification_agree = lst_agree))
 
 
 # delete useless columns
@@ -124,7 +124,8 @@ empty_cols <- c("評分a1",
 df[, empty_cols] <- NA
 
 col_order <-
-  c("id",
+  c(
+    "id",
     "lat",
     "lng",
     "dataTime",

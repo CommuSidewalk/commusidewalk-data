@@ -30,6 +30,8 @@ myUnlist <- function(x) {
     x <- l
   }
 }
+
+print('2_cleaning.R done :)')
 form <- df$formReply
 form <- sapply(form, myUnlist)
 

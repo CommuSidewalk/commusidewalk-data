@@ -32,3 +32,5 @@ json <- jsonlite::fromJSON(str_url)
 lst_info <- json$data
 save(df_img, lst_info, file = './data/1.RData')
 # end ---------------------------------------------------------------
+
+print('1_download.R done :)')

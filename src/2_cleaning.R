@@ -87,7 +87,23 @@ df$verification <- NULL
 
 
 # invert row order (to asc)
-df <- df[order(nrow(df):1), ]
+df <- df[order(nrow(df):1),]
+
+
+
+# generate imageUrl column -----------------------------------
+id2ImageUrl <- function(image_id) {
+  prefix = paste('https://commutag.agawork.tw/static/upload/dataset/',
+                 dataset,
+                 '/image/',
+                 sep = '')
+  return <- paste(prefix, image_id, '.jpg', sep = '')
+}
+
+df$imageUrl <- sapply(df$`_id`, id2ImageUrl)
+# end --------------------------------------------------------
+
+df$id <- 1:nrow(df)
 
 df <- df %>% rename(
   '上傳者' = 'uploader',
@@ -99,18 +115,16 @@ df <- df %>% rename(
   '實際行走路徑中會碰到的最大動態風險' = '行人被迫實際行走路徑中會碰到的最大動態風險',
 )
 
-empty_cols <- c("imageName",
-                "評分a1",
+
+empty_cols <- c("評分a1",
                 "評分b1",
                 "評分c1",
-                "思源地圖類別-無須填寫",
-                "imageUrl")
+                "思源地圖類別-無須填寫")
 
 df[, empty_cols] <- NA
 
 col_order <-
-  c(
-    "imageName",
+  c("id",
     "lat",
     "lng",
     "dataTime",

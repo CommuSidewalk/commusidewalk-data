@@ -31,33 +31,27 @@ myUnlist <- function(x) {
   }
 }
 
-print('2_cleaning.R done :)')
 form <- df$formReply
 form <- sapply(form, myUnlist)
 
 # remove column version
 df$formReply <- NULL
 df <- cbind(df, form)
-# keep formReply version
-# df$formReply <- form
 # end ----------------------------------------------------
 
 
 # rename other columns -----------------------------------
 df$annotation_user <- df$annotation$user
+df$annotation_result <- df$annotation$annotation |>
+  sapply(\(x) {
+    if (is.list(x)) {
+      indices <- x$value == 'true'
+      return <- myPaste(x[indices, 'name'])
+    } else {
+      return <- NA
+    }
+  })
 
-
-annotateClean <- function(x) {
-  if (is.list(x)) {
-    indices <- x$value == 'true'
-    return <- myPaste(x[indices, 'name'])
-  } else {
-    return <- NA
-  }
-}
-
-df$annotation_result <-
-  sapply(df$annotation$annotation, annotateClean)
 
 
 lst_user <- sapply(df$verification, function(x) {
@@ -87,68 +81,69 @@ df$verification <- NULL
 
 
 # invert row order (to asc)
-df <- df[order(nrow(df):1),]
+df <- df[order(nrow(df):1), ]
 
 
 
-# generate imageUrl column -----------------------------------
+# generate `imgName`, `imageUrl` column -----------------------------------
 id2ImageUrl <- function(image_id) {
-  prefix = paste('https://commutag.agawork.tw/static/upload/dataset/',
-                 dataset,
-                 '/image/',
-                 sep = '')
-  return <- paste(prefix, image_id, '.jpg', sep = '')
+  return <-
+    paste(
+      'https://commutag.agawork.tw/static/upload/dataset/',
+      dataset,
+      '/image/',
+      image_id,
+      '.jpg',
+      sep = ''
+    )
 }
 
-df$imageUrl <- sapply(df$`_id`, id2ImageUrl)
+df$imgUrl <- sapply(df$`_id`, id2ImageUrl)
+df$imgName <- 1:nrow(df)
 # end --------------------------------------------------------
 
-df$id <- 1:nrow(df)
-
-df <- df %>% rename(
-  '上傳者' = 'uploader',
-  '標註者' = 'annotation_user',
-  '標籤' = 'annotation_result',
-  '驗證者' = 'verification_user',
-  '驗證同意值' = 'verification_agree',
-  '原始總寬度－是否夠寬讓輪椅通行' = '原始總寬度－是否夠寬讓輪椅通行',
-  '實際行走路徑中會碰到的最大動態風險' = '行人被迫實際行走路徑中會碰到的最大動態風險',
+df <- df |> rename(
+  'id' = '_id',
+  'marker' = 'annotation_user',
+  'label' = 'annotation_result',
+  'checker' = 'verification_user',
+  # '驗證同意值' = 'verification_agree',
+  'sidewalk' = '原本有無設置人行空間',
+  'protective' = '保護性',
+  'wheelchair' = '原始總寬度－是否夠寬讓輪椅通行',
+  'occupation' = '佔用情形(多選)-導致兩人交會需停讓或淨寬<1.5米',
+  'walkRisk' = '行人被迫實際行走路徑中會碰到的最大動態風險',
+  'riskRate' = '承受上題風險的頻率',
+  'purpose' = '使用目的',
+  # 5s59fsp6kql doesn't exist in list-image api
+  # 'mapType' = '思源地圖類別-無須填寫',
+  'mapName' = '思源地圖名稱-無須填寫',
 )
-
-
-empty_cols <- c("評分a1",
-                "評分b1",
-                "評分c1",
-                "思源地圖類別-無須填寫")
-
-df[, empty_cols] <- NA
 
 col_order <-
   c(
+    "imgName",
     "id",
     "lat",
     "lng",
     "dataTime",
     "remark",
-    "上傳者",
-    "標註者",
-    "驗證者",
-    "標籤",
+    "uploader",
+    "marker",
+    "checker",
+    "label",
     "createdAt",
     "updatedAt",
-    "評分a1",
-    "評分b1",
-    "評分c1",
-    "原本有無設置人行空間",
-    "保護性",
-    "原始總寬度－是否夠寬讓輪椅通行",
-    "佔用情形(多選)-導致兩人交會需停讓或淨寬<1.5米",
-    "實際行走路徑中會碰到的最大動態風險",
-    "承受上題風險的頻率",
-    "使用目的",
-    "思源地圖類別-無須填寫",
-    "思源地圖名稱-無須填寫",
-    "imageUrl"
+    "sidewalk",
+    "protective",
+    "wheelchair",
+    "occupation",
+    "walkRisk",
+    "riskRate",
+    "purpose",
+    # "mapType",
+    "mapName",
+    "imgUrl"
   )
 df <- df[, col_order]
 
@@ -156,7 +151,7 @@ df <- df[, col_order]
 
 # create default filename based on timestamp
 current_time <- format(Sys.time(), '%Y%m%d')
-fname <- paste('./data/', current_time, '.csv', sep = '')
+fname <- paste('./output/', current_time, '.csv', sep = '')
 write.csv(
   df,
   file = fname,
@@ -165,5 +160,6 @@ write.csv(
   row.names = FALSE
 )
 
-
 save(df, file = './data/2.RData')
+
+print('2_cleaning.R done :)')

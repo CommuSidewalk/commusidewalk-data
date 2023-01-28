@@ -34,6 +34,31 @@ myUnlist <- function(x) {
 form <- df$formReply
 form <- sapply(form, myUnlist)
 
+# df2 contains will keep multivalue in one data point
+df2 <- df
+form2 <-
+  sapply(df$formReply, \(x) unlist(x, recursive = FALSE, use.names = FALSE))
+df2 <- cbind(df, form2)
+df2$formReply <- NULL
+df2$marker <- df$annotation$user
+df2$label <- df$annotation$annotation
+df2$annotation <- NULL
+df2 <- df2 |> rename(
+  'id' = '_id',
+  # '驗證同意值' = 'verification_agree',
+  'sidewalk' = '原本有無設置人行空間',
+  'protective' = '保護性',
+  'wheelchair' = '原始總寬度－是否夠寬讓輪椅通行',
+  'occupation' = '佔用情形(多選)-導致兩人交會需停讓或淨寬<1.5米',
+  'walkRisk' = '行人被迫實際行走路徑中會碰到的最大動態風險',
+  'riskRate' = '承受上題風險的頻率',
+  'purpose' = '使用目的',
+  # 5s59fsp6kql doesn't exist in list-image api
+  # 'mapType' = '思源地圖類別-無須填寫',
+  'mapName' = '思源地圖名稱-無須填寫',
+)
+# end df2 ------------------------------------------------
+
 # remove column version
 df$formReply <- NULL
 df <- cbind(df, form)
@@ -51,7 +76,6 @@ df$annotation_result <- df$annotation$annotation |>
       return <- NA
     }
   })
-
 
 
 lst_user <- sapply(df$verification, function(x) {
@@ -81,7 +105,7 @@ df$verification <- NULL
 
 
 # invert row order (to asc)
-df <- df[order(nrow(df):1), ]
+df <- df[order(nrow(df):1),]
 
 
 
@@ -160,6 +184,10 @@ write.csv(
   row.names = FALSE
 )
 
-save(df, file = './data/2.RData')
+df2_with_list <- df2
+df2 <- df
+
+save(df2, df2_with_list, file = './data/2.RData')
 
 print('2_cleaning.R done :)')
+

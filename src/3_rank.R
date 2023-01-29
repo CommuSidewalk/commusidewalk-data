@@ -56,6 +56,7 @@ lookup_multi <- list(
     "公共設施阻礙（機電設備）" =  0.3,
     "公共設施阻礙（樹穴）" =  0.3,
     "公共設施阻礙（有停車格）" =  0.3,
+    "公共設施阻礙（公車亭）" = 0.3, # 原始演算法無此項
     "私人佔用（臨時停車）" =  0.4,
     "沒有人行道或騎樓" = 0
   )
@@ -71,21 +72,38 @@ for (col in names(lookup)) {
     }
   })
 }
-for (col in names(lookup_multi)) {
-  df[[col]] <- sapply(df[[col]], \(x) {
-    if (!is.null(x)) {
-      return <-
-        sapply(x, \(y) lookup_multi[[col]][[y]]) |>
-        unlist() |>
-        sum()
-    } else {
-      return <- 1
-    }
-  })
-}
+# for (col in names(lookup_multi)) {
+#   df[[col]] <- sapply(df[[col]], \(x) {
+#     if (!is.null(x)) {
+#       return <-
+#         sapply(x, \(y) lookup_multi[[col]][[y]]) |>
+#         unlist() |>
+#         sum()
+#     } else {
+#       return <- 1
+#     }
+#   })
+# }
 
 # to fix weird value of mapName NANA
 df$mapName <- NA
+
+find_small <- TRUE
+
+# df<-df[1:10,]
+df$occupation <- sapply(df$occupation, \(x) {
+  if (!is.null(x)) {
+    vec <- sapply(x, \(y) lookup_multi$occupation[[y]]) |> unlist(use.names = FALSE)
+    if (find_small) {
+      return <- min(vec)
+    } else {
+      return <- max(vec)
+    }
+  } else {
+    return <- 1
+  }
+})
+
 
 a1 <- function(x) {
   if (x$sidewalk == 0) {
@@ -94,15 +112,17 @@ a1 <- function(x) {
   } else {
     v <- x$occupation
   }
-  return <-
+  rank <-
     0.2 * (x$sidewalk * x$protective * x$wheelchair) +
     0.2 * v + 0.6 * x$walkRisk
+  return <- rank * 10
 }
 b1 <- function(x) {
   v <- ifelse(x$sidewalk == 0, 1, 0)
   rank <-
     (0.5 * x$protective) + (0.5 * x$wheelchair) - v - x$walkRisk
-  return <- ifelse(rank < -1,-1, rank)
+  rank <- ifelse(rank < -1,-1, rank)
+  return <- rank * 10
 }
 c1 <- function(x) {
   if (x$sidewalk == 0) {
@@ -111,8 +131,9 @@ c1 <- function(x) {
   } else {
     v <- x$occupation
   }
-  return <-
+  rank <-
     x$sidewalk * x$protective * x$wheelchair * v * x$walkRisk
+  return <- rank * 10
 }
 
 # backup current df
@@ -122,8 +143,8 @@ save(df3, file = './data/3.RData')
 # append rank columns
 df <- df2
 df$rankA1 <- as.numeric(apply(df3, 1, a1))
-df$rankB1 <- as.numeric(apply(df3, 1, b1))
-df$rankC1 <- as.numeric(apply(df3, 1, c1))
+# df$rankB1 <- as.numeric(apply(df3, 1, b1))
+# df$rankC1 <- as.numeric(apply(df3, 1, c1))
 
 current_time <- format(Sys.time(), '%Y%m%d')
 fname <- paste('./output/', current_time, '_rank.csv', sep = '')

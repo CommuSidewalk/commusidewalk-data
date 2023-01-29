@@ -1,7 +1,7 @@
 library(dplyr)
 
 createNewCsv <- function() {
-  scripts <- list.files("./src", full.names = TRUE)
+  scripts <- list.files("./R", full.names = TRUE)
   # the |> flag is called base R pipe
   # while %>% is called magrittr
   scripts |>
@@ -38,7 +38,7 @@ df_sc <-
 convert <- function (to) {
   fname <-
     switch(to, 'chinese' = './shortform.csv', 'shortform' = './chinese.csv')
-  
+
   msg <- paste(
     'Please provide full file location',
     ' (or just press Enter if your file is called `',
@@ -47,7 +47,7 @@ convert <- function (to) {
     sep = ''
   )
   cat(msg)
-  
+
   input <- readLines('stdin', n = 1)
   if (input != '') {
     fname <- input

@@ -10,8 +10,7 @@ df <- df2_with_list
 # convert columns to factor (finite set)
 col_factor <-
   c('sidewalk', 'protective', 'wheelchair', 'walkRisk', 'riskRate')
-df <- df |>
-  mutate(across(col_factor, \(x) factor(unlist(x))))
+df <- mutate(df, across(col_factor, \(x) factor(unlist(x))))
 
 
 # convert to score based on lookup table
@@ -29,7 +28,7 @@ convert_score <- function(df, algo) {
 
   for (col in names(lookup)) {
     df[[col]] <- sapply(df[[col]], \(x) {
-      value <- lookup[[col]][[x]]
+      value <- lookup[[col]][[as.character(x)]]
       if (length(value) == 0) {
         return <- 0
       } else {
@@ -56,7 +55,7 @@ convert_score <- function(df, algo) {
   df$occupation <- sapply(df$occupation, \(x) {
     if (!is.null(x)) {
       vec <-
-        sapply(x, \(y) lookup_multi$occupation[[y]]) |> unlist(use.names = FALSE)
+        sapply(x, \(y) lookup_multi$occupation[[as.character(y)]]) |> unlist(use.names = FALSE)
       if (is.null(vec)) {
         return <- lookup_multi$occupation$empty
       } else {
@@ -67,14 +66,14 @@ convert_score <- function(df, algo) {
         }
       }
     } else {
-      return <- 1
+      return <- lookup_multi$occupation$empty
     }
   })
   return <- df
 }
 
-# to fix weird value of mapName NANA
-df$mapName <- NA
+# remove this column
+df$mapName <- NULL
 
 a1 <- function(x) {
   if (x$sidewalk == 0) {

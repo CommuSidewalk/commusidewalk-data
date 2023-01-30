@@ -128,7 +128,6 @@ df$imgName <- 1:nrow(df)
 # end --------------------------------------------------------
 
 df <- df |> rename(
-  'id' = '_id',
   'marker' = 'annotation_user',
   'label' = 'annotation_result',
   'checker' = 'verification_user',
@@ -139,16 +138,15 @@ df <- df |> rename(
   'occupation' = '佔用情形(多選)-導致兩人交會需停讓或淨寬<1.5米',
   'walkRisk' = '行人被迫實際行走路徑中會碰到的最大動態風險',
   'riskRate' = '承受上題風險的頻率',
-  'purpose' = '使用目的',
+  'purpose' = '使用目的'
   # 5s59fsp6kql doesn't exist in list-image api
   # 'mapType' = '思源地圖類別-無須填寫',
-  'mapName' = '思源地圖名稱-無須填寫',
+  # 'mapName' = '思源地圖名稱-無須填寫',
 )
 
 col_order <-
   c(
     "imgName",
-    "id",
     "lat",
     "lng",
     "dataTime",
@@ -167,8 +165,9 @@ col_order <-
     "riskRate",
     "purpose",
     # "mapType",
-    "mapName",
-    "imgUrl"
+    # "mapName",
+    "imgUrl",
+    "_id"
   )
 df <- df[, col_order]
 

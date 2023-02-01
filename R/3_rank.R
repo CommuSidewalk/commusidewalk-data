@@ -111,8 +111,8 @@ c1 <- function(x) {
 }
 
 # backup current df
+df3_score <- df
 df3 <- df
-save(df3, file = './data/3.RData')
 
 # append rank columns
 df <- df2
@@ -138,6 +138,9 @@ write.csv(
   na = '',
   row.names = FALSE
 )
+
+df3 <- df
+save(df3_score, df3, file = './data/3.RData')
 
 
 print('3_rank.R done :)')

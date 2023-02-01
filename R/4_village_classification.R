@@ -26,6 +26,7 @@ if (!file.exists(shp_fname)) {
       }
     )
   }
+  unlink(temp)
 }
 
 village_nc <- st_read(shp_fname)
@@ -65,6 +66,16 @@ for (i in seq_along(w)) {
       vill_df[w[[i]], c('villCode', 'countyName', 'townName', 'villName')]
   }
 }
+
+current_time <- format(Sys.time(), '%Y%m%d')
+fname <- paste('./output/', current_time, '_village.csv', sep = '')
+write.csv(
+  df,
+  file = fname,
+  fileEncoding = 'UTF-8',
+  na = '',
+  row.names = FALSE
+)
 
 df4 <- df
 save(df4, file = './data/4.RData')

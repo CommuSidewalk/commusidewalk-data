@@ -30,14 +30,8 @@ if (!file.exists(shp_fname)) {
 }
 
 village_nc <- st_read(shp_fname)
-commu_nc <-
-  st_read(
-    'output/20230131_rank.csv',
-    options = c("X_POSSIBLE_NAMES=lng", "Y_POSSIBLE_NAMES=lat")
-  )
-
-# set commu_nc coordinate reference system to village_nc crs
-st_crs(commu_nc) <- st_crs(village_nc)
+# Maybe(?) Android use WGS84, aka EPSG:4326 coordinate reference system
+village_nc <- st_transform(village_nc, crs=4326)
 
 vill_df <- st_drop_geometry(village_nc)
 vill_df <-
@@ -53,6 +47,12 @@ vill_df$fullName <-
         vill_df$villName,
         sep = '_')
 
+# remove na columns
+indices <- !is.na(df$lat) | !is.na(df$lng)
+df <- df[indices,]
+commu_nc <- st_as_sf(df, coords = c('lng', 'lat'), crs = 4326)
+
+# add three columns
 df[c('countyName', 'townName', 'villName')] <- NA
 
 # classify all image to closet village

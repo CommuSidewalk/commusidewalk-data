@@ -10,7 +10,7 @@ df <- df2_with_list
 # convert columns to factor (finite set)
 col_factor <-
   c('sidewalk', 'protective', 'wheelchair', 'walkRisk', 'riskRate')
-df <- mutate(df, across(col_factor, \(x) factor(unlist(x))))
+df <- mutate(df, across(all_of(col_factor), \(x) factor(unlist(x))))
 
 
 # convert to score based on lookup table

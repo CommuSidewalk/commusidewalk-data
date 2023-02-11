@@ -1,14 +1,7 @@
 library(dplyr)
 
-createNewCsv <- function() {
-  scripts <- list.files("./R", full.names = TRUE)
-  # the |> flag is called base R pipe
-  # while %>% is called magrittr
-  scripts |>
-    sort() |>
-    stringr::str_subset('\\d\\_.*$') |>
-    sapply(source)
-}
+# get runAll function
+source('R/scripts/run_all.R')
 
 # 代碼與中文對照表
 df_sc <-
@@ -69,7 +62,7 @@ convert <- function (to) {
 
 prompt_msg <- paste(
   'Select action and press Enter: ',
-  '[1] create new csv from commutag platform.',
+  '[1] run all steps to generate csv.',
   '[2] convert shortform to chinese.',
   '[3] convert chinese to shortform.',
   '\nYour selection: ',
@@ -81,7 +74,7 @@ cat(prompt_msg)
 # it only works in the interactive mode
 readLines("stdin", n = 1) |>
   switch (
-    '1' = createNewCsv(),
+    '1' = runAll(),
     '2' = convert('chinese'),
     '3' = convert('shortform')
   )

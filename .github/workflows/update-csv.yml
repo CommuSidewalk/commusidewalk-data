@@ -5,12 +5,11 @@ on:
     - cron: '0 23 * * *' # 每天23:00執行
 jobs:
   setup-env:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: r-lib/actions/setup-renv
+      - uses: r-lib/actions/setup-renv@v2
 
-  cache-village-shp:
-    steps:
       - name: Cache village shp file
         id: cache-village-shp
         uses: actions/cache@v3
@@ -22,8 +21,6 @@ jobs:
         if: steps.cache-village-shp.outputs.cache-hit != 'true'
         run: Rscript R/utils/village_shp_downloader.R
 
-  run-script:
-    steps:
       - name: Run all script
         run: Rscript run_all.R
 
@@ -35,5 +32,5 @@ jobs:
           git config user.email "GitHub Action"
 
           git add output/
-          git commit -m "ci: 🆙🇩🇦🇹🇪e csv 😬👍"
+          git commit -m "ci: update csv 😬👍"
           git push

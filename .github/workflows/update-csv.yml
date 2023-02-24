@@ -2,15 +2,28 @@ name: Update csv
 run-name: ${{ github.actor }} is updating commusidewalk csv
 on:
   schedule:
-    - cron:  '0 23 * * *' # 每天23:00執行
+    - cron: '0 23 * * *' # 每天23:00執行
 jobs:
-  update-csv:
-    runs-on: ubuntu-latest
+  setup-env:
     steps:
       - uses: actions/checkout@v3
-
       - uses: r-lib/actions/setup-renv
 
+  cache-village-shp:
+    steps:
+      - name: Cache village shp file
+        id: cache-village-shp
+        uses: actions/cache@v3
+        with:
+          path: data/village_shp
+          key: ${{ runner.os }}-village-shp
+
+      - name: Download village shp
+        if: steps.cache-village-shp.outputs.cache-hit != 'true'
+        run: Rscript R/utils/village_shp_downloader.R
+
+  run-script:
+    steps:
       - name: Run all script
         run: Rscript run_all.R
 

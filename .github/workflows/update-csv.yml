@@ -1,11 +1,8 @@
 name: Update csv
 run-name: ${{ github.actor }} is updating commusidewalk csv
 on:
-  # schedule:
-  #   - cron: '0 15 * * *' # 每天23:00執行(UTC+8)
-  push:
-    branches:
-      - master
+  schedule:
+    - cron: '0 15 * * *' # 每天臺灣時間23:00執行(UTC+8)
 
 jobs:
   update-csv:
@@ -46,5 +43,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add output/
-          git commit -m "ci: update csv 😬👍"
+          git commit -m "update csv 😬👍"
           git push

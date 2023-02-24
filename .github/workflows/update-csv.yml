@@ -2,15 +2,20 @@ name: Update csv
 run-name: ${{ github.actor }} is updating commusidewalk csv
 on:
   # schedule:
-  #   - cron: '0 23 * * *' # 每天23:00執行
+  #   - cron: '0 15 * * *' # 每天23:00執行(UTC+8)
   push:
     branches:
       - master
 
 jobs:
-  setup-env:
+  update-csv:
     runs-on: ubuntu-latest
     steps:
+      - name: Set timezone
+        uses: szenius/set-timezone@v1.0
+        with:
+          timezoneLinux: "Asia/Taipei"
+
       - uses: actions/checkout@v3
 
       # prevent error when running setup-renv

@@ -1,0 +1,26 @@
+name: Update csv
+run-name: ${{ github.actor }} is updating commusidewalk csv
+on:
+  schedule:
+    - cron:  '0 23 * * *' # 每天23:00執行
+jobs:
+  update-csv:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: r-lib/actions/setup-renv
+
+      - name: Run all script
+        run: Rscript run_all.R
+
+      - name: Add output files
+        run: |
+          # commit as github bot
+          # ref: https://rcmdnk.com/blog/2022/09/29/computer-github/
+          git config user.name "1818935+github-actions[bot]@users.noreply.github.com"
+          git config user.email "GitHub Action"
+
+          git add output/
+          git commit -m "ci: 🆙🇩🇦🇹🇪e csv 😬👍"
+          git push

@@ -1,8 +1,12 @@
 name: Update csv
 run-name: ${{ github.actor }} is updating commusidewalk csv
 on:
-  schedule:
-    - cron: '0 23 * * *' # 每天23:00執行
+  # schedule:
+  #   - cron: '0 23 * * *' # 每天23:00執行
+  push:
+    branches:
+      - main
+
 jobs:
   setup-env:
     runs-on: ubuntu-latest

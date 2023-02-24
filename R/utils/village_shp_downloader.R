@@ -9,7 +9,7 @@ if (!file.exists(shp_fname)) {
     destfil = temp,
     mode = 'wb'# https://stackoverflow.com/questions/29814405/why-do-i-need-to-use-mode-wb-with-download-file-for-this-rds-file
   )
-  dir.create(shp_folder, showWarnings = FALSE)
+  dir.create(shp_folder, showWarnings = FALSE, recursive = TRUE)
   z <- unzip(temp, list = TRUE)
   for (fname in z$Name) {
     tryCatch(

@@ -15,7 +15,7 @@ jobs:
 
       # prevent error when running setup-renv
       - name: Install curl
-        run: sudo apt-get install -y libcurl4-openssl-dev libudunits2-dev
+        run: sudo apt install -y libcurl4-openssl-dev libudunits2-dev libgdal-dev
 
       - uses: r-lib/actions/setup-renv@v2
 

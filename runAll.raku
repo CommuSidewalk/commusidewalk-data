@@ -1,1 +1,1 @@
-run 'powershell', 'Rscript run_all.R';
+run <Rscript run_all.R>;

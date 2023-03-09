@@ -1,3 +1,5 @@
+# the newer version is in 5_write_to_db.R
+# this file contains PostGIS operations, and local db connection settings.
 library(RPostgres)
 library(DBI)
 library(magrittr)
@@ -26,7 +28,7 @@ dbWriteTable(conn
              # schema and table
              , "info_l2"
              , csv_value
-             , overwrite = TRUE # add row to bottom
+             , overwrite = TRUE
              , row.names = FALSE
 )
 

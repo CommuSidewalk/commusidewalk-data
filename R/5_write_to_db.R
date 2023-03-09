@@ -8,7 +8,6 @@ source('R/utils/village_shp_downloader.R')
 
 df <- df4
 
-# connect
 conn <- DBI::dbConnect(
   drv = RPostgres::Postgres(),
   dbname = Sys.getenv('PGDATABASE'),
@@ -20,20 +19,12 @@ conn <- DBI::dbConnect(
   sslmode = 'require'
 )
 
-# load CSV
-# current_time <- format(Sys.time(), '%Y%m%d')
-# fname <- paste('output/20230308_rank.csv', sep = '')
-# fname <- paste('output/', current_time, '_rank.csv', sep = '')
-# csv_value <- read.csv(paste(getwd(), fname, sep = "/"))
-# csv_name <- names(csv_value)
-# csv_name[20] <- "_id"
-# colnames(csv_value) <- csv_name
-
-# write CSV to DB
-dbWriteTable(conn ,
-             "info_l2" ,
-             df4 ,
-             overwrite = TRUE ,
+# write df4 to DB
+dbWriteTable(conn,
+             "info_l2",
+             df,
+             # this will overwrite existing table
+             overwrite = TRUE,
              row.names = FALSE)
 
-print('csv_to_postgresql.R done :)')
+print('5_write_to_db done :)')

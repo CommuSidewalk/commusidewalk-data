@@ -4,3 +4,4 @@
 .Ruserdata
 **/*.RData
 /data
+*.env

@@ -1,3 +1,4 @@
+# DB best practices: https://solutions.posit.co/connections/db/
 library(RPostgres)
 library(DBI)
 library(magrittr)

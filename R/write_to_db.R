@@ -53,8 +53,12 @@ sql <- paste(
   '   villCode VARCHAR(255)',
   ');'
 )
+rs <- dbSendQuery(conn, sql)
+dbClearResult(rs)
 
-dbSendQuery(conn, sql)
+sql <- 'ALTER TABLE info_l2 ADD CONSTRAINT info_l2_pk PRIMARY KEY (_id);'
+rs <- dbSendQuery(conn, sql)
+dbClearResult(rs)
 
 # write df4 to DB
 dbWriteTable(conn,

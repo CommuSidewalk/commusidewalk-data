@@ -20,6 +20,42 @@ conn <- DBI::dbConnect(
   sslmode = 'require'
 )
 
+# dbRemoveTable(conn, 'info_l2')
+
+sql <- paste(
+  'CREATE TABLE IF NOT EXISTS info_l2 (',
+  '   _id VARCHAR(255),',
+  '   imgName INTEGER,',
+  '   lat FLOAT,',
+  '   lng FLOAT,',
+  '   dataTime TIMESTAMP,',
+  '   remark TEXT,',
+  '   uploader VARCHAR(255),',
+  '   marker VARCHAR(255),',
+  '   checker VARCHAR(255),',
+  '   label VARCHAR(255),',
+  '   createdAt TIMESTAMP,',
+  '   updatedAt TIMESTAMP,',
+  '   sidewalk VARCHAR(255),',
+  '   protective VARCHAR(255),',
+  '   wheelchair VARCHAR(255),',
+  '   occupation VARCHAR(255),',
+  '   walkRisk VARCHAR(255),',
+  '   riskRate VARCHAR(255),',
+  '   purpose VARCHAR(255),',
+  '   imgUrl VARCHAR(255),',
+  '   rankA1 FLOAT,',
+  '   rankB1 FLOAT,',
+  '   rankC1 FLOAT,',
+  '   countyName VARCHAR(255),',
+  '   townName VARCHAR(255),',
+  '   villName VARCHAR(255),',
+  '   villCode VARCHAR(255)',
+  ');'
+)
+
+dbSendQuery(conn, sql)
+
 # write df4 to DB
 dbWriteTable(conn,
              "info_l2",
@@ -28,4 +64,4 @@ dbWriteTable(conn,
              overwrite = TRUE,
              row.names = FALSE)
 
-print('5_write_to_db done :)')
+print('write_to_db done :)')

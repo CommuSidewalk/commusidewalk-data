@@ -44,8 +44,9 @@ for (i in seq_along(w)) {
   }
 }
 
-current_time <- format(Sys.time(), '%Y%m%d')
-fname <- paste('./output/', current_time, '_village.csv', sep = '')
+# current_time <- format(Sys.time(), '%Y%m%d')
+# fname <- paste('./output/', current_time, '_village.csv', sep = '')
+fname <- paste('./output/', 'village.csv', sep = '')
 write.csv(
   df,
   file = fname,

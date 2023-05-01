@@ -129,8 +129,9 @@ df$rankC1 <- df3 |>
   apply(1, c1) |>
   as.numeric()
 
-current_time <- format(Sys.time(), '%Y%m%d')
-fname <- paste('./output/', current_time, '_rank.csv', sep = '')
+# current_time <- format(Sys.time(), '%Y%m%d')
+# fname <- paste('./output/', current_time, '_rank.csv', sep = '')
+fname <- paste('./output/', 'rank.csv', sep = '')
 write.csv(
   df,
   file = fname,

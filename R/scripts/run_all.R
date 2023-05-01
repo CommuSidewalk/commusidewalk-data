@@ -10,3 +10,4 @@ runAll <- function() {
     stringr::str_subset('\\d\\_.*$') |>
     sapply(source)
 }
+

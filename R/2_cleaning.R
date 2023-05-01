@@ -174,8 +174,9 @@ df <- df[, col_order]
 
 
 # create default filename based on timestamp
-current_time <- format(Sys.time(), '%Y%m%d')
-fname <- paste('./output/', current_time, '.csv', sep = '')
+# current_time <- format(Sys.time(), '%Y%m%d')
+# fname <- paste('./output/', current_time, '.csv', sep = '')
+fname <- paste('./output/', 'cleansed.csv', sep = '')
 write.csv(
   df,
   file = fname,

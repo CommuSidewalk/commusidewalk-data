@@ -6,7 +6,7 @@ source('R/utils/village_shp_downloader.R')
 load('data/3.RData')
 df <- df3
 
-village_nc <- st_read('data/village_shp/VILLAGE_MOI_1111213.shp')
+village_nc <- st_read('data/village_shp/VILLAGE_MOI_1111118.shp')
 # Maybe(?) Android use WGS84, aka EPSG:4326 coordinate reference system
 village_nc <- st_transform(village_nc, crs=4326)
 

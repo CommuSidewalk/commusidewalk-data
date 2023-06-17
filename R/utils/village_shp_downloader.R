@@ -1,11 +1,11 @@
 # download and unzip village shp files
 # unzip one by one because errors might occur with some files
 shp_folder <- 'data/village_shp'
-shp_fname <- paste(shp_folder, '/VILLAGE_MOI_1111213.shp', sep = '')
+shp_fname <- paste(shp_folder, '/VILLAGE_MOI_1111118.shp', sep = '')
 if (!file.exists(shp_fname)) {
   temp <- tempfile(fileext = '.zip')
   download.file(
-    "https://www.tgos.tw/TGOS/Web/MapData/TGOS_DownLoadMapOpenData.aspx?code=TW-07-301000100G-613995_20121113171335",
+    "https://data.moi.gov.tw/MoiOD/System/DownloadFile.aspx?DATA=923454AB-F2CA-4AA2-BC59-1920215F1ADC",
     destfil = temp,
     mode = 'wb'# https://stackoverflow.com/questions/29814405/why-do-i-need-to-use-mode-wb-with-download-file-for-this-rds-file
   )

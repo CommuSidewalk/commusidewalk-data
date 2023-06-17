@@ -1,0 +1,3 @@
+# keep `data` folder in git without the files inside.
+*
+!.gitignore

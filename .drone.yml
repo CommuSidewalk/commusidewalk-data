@@ -1,0 +1,16 @@
+kind: pipeline
+type: docker
+name: Update csv to GitHub
+
+steps:
+- name: Generate output and push to GitHub
+  image: rocker/geospatial:4
+  commands:
+  - R -e "install.packages('renv')"
+  - R -e "renv::restore()"
+  - Rscript run_all.R
+  - git config user.name "github-actions[bot]"
+  - git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+  - git add output/
+  - git commit -m "update csv 😬👍"
+  - git push

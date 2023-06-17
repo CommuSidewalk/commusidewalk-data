@@ -4,9 +4,14 @@ name: Update csv to GitHub
 
 steps:
 - name: Generate output and push to GitHub
-  image: rocker/geospatial:4
+  image: rocker/geospatial:4.2.3
+  volumes:
+  - name: renv_paths_cache_host
+    path: /renv/cache
+  environment:
+    RENV_PATHS_CACHE: /renv/cache
+    RENV_VERSION: 0.17.3
   commands:
-  - R -e "install.packages('renv')"
   - R -e "renv::restore()"
   - Rscript run_all.R
   - git config user.name "github-actions[bot]"
@@ -14,3 +19,8 @@ steps:
   - git add output/
   - git commit -m "update csv 😬👍"
   - git push
+
+volumes:
+- name: renv_paths_cache_host
+  host:
+    path: /opt/local/renv/cache

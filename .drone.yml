@@ -8,19 +8,29 @@ steps:
   volumes:
   - name: renv_paths_cache_host
     path: /renv/cache
+  - name: shp_cache
+    path: /drone/src/data
   environment:
     RENV_PATHS_CACHE: /renv/cache
     RENV_VERSION: 0.17.3
   commands:
   - R -e "renv::restore()"
+  - |
+     if [ ! -d "/drone/src/data/village_shp" ]; then
+        Rscript R/utils/village_shp_downloader.R
+     fi
   - Rscript run_all.R
-  - git config user.name "github-actions[bot]"
-  - git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-  - git add output/
-  - git commit -m "update csv 😬👍"
-  - git push
+  - |
+     git config user.name "github-actions[bot]"
+     git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+     git add output/
+     git commit -m "update csv 😬👍"
+     git push
 
 volumes:
 - name: renv_paths_cache_host
   host:
     path: /opt/local/renv/cache
+- name: shp_cache
+  host:
+    path: /opt/local/commusidewalk-data/cache

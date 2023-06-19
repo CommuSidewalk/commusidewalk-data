@@ -2,10 +2,10 @@ library(RPostgres)
 library(DBI)
 library(dotenv)
 
-get_db_conn <- function () {
+get_db_conn <- function (dbname = Sys.getenv("PGDATABASE")) {
    DBI::dbConnect(
     drv = RPostgres::Postgres(),
-    dbname = Sys.getenv('PGDATABASE'),
+    dbname = dbname,
     host = Sys.getenv('PGHOST'),
     user = Sys.getenv('PGUSER'),
     password = Sys.getenv('PGPASSWORD'),

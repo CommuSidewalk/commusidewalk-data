@@ -1,50 +1,104 @@
-# 施工中
-"事件編號"
-"發生時間"
-"事故類別名稱"
-"處理單位名稱警局層"
-"發生地點"
-"天候名稱"
-"光線名稱"
-"道路類別-第1當事者-名稱"
-"速限-第1當事者"
-"道路型態大類別名稱"
-"道路型態子類別名稱"
-"事故位置大類別名稱"
-"事故位置子類別名稱"
-"路面狀況-路面鋪裝名稱"
-"路面狀況-路面狀態名稱"
-"路面狀況-路面缺陷名稱"
-"道路障礙-障礙物名稱"
-"道路障礙-視距品質名稱"
-"道路障礙-視距名稱"
-"號誌-號誌種類名稱"
-"號誌-號誌動作名稱"
-"車道劃分設施-分向設施大類別名稱"
-"車道劃分設施-分向設施子類別名稱"
-"車道劃分設施-分道設施-快車道或一般車道間名稱"
-"車道劃分設施-分道設施-快慢車道間名稱"
-"車道劃分設施-分道設施-路面邊線名稱"
-"事故類型及型態大類別名稱"
-"事故類型及型態子類別名稱"
-"肇因研判大類別名稱-主要"
-"肇因研判子類別名稱-主要"
-"死亡受傷人數"
-"當事者順位"
-"當事者區分-類別-大類別名稱-車種"
-"當事者區分-類別-子類別名稱-車種"
-"當事者屬-性-別名稱"
-"當事者事故發生時年齡"
-"保護裝備名稱"
-"行動電話或電腦或其他相類功能裝置名稱"
-"當事者行動狀態大類別名稱"
-"當事者行動狀態子類別名稱"
-"車輛撞擊部位大類別名稱-最初"
-"車輛撞擊部位子類別名稱-最初"
-"車輛撞擊部位大類別名稱-其他"
-"車輛撞擊部位子類別名稱-其他"
-"肇因研判大類別名稱-個別"
-"肇因研判子類別名稱-個別"
-"肇事逃逸類別名稱-是否肇逃"
-"經度"
-"緯度"
+CREATE TABLE IF NOT EXISTS accidents (
+  event_id INTEGER,
+  occurrence_time TIMESTAMP,
+  accident_category_name VARCHAR(255),
+  handling_unit_name_police_department_level VARCHAR(255),
+  location VARCHAR(255),
+  weather_name VARCHAR(255),
+  lighting_name VARCHAR(255),
+  road_category_first_party_name VARCHAR(255),
+  speed_limit_first_party VARCHAR(255),
+  road_type_main_category_name VARCHAR(255),
+  road_type_sub_category_name VARCHAR(255),
+  accident_location_main_category_name VARCHAR(255),
+  accident_location_sub_category_name VARCHAR(255),
+  road_condition_paving_name VARCHAR(255),
+  road_condition_surface_status_name VARCHAR(255),
+  road_condition_surface_defect_name VARCHAR(255),
+  road_obstacle_obstacle_name VARCHAR(255),
+  road_obstacle_visibility_quality_name VARCHAR(255),
+  road_obstacle_visibility_name VARCHAR(255),
+  traffic_light_signal_type_name VARCHAR(255),
+  traffic_light_signal_action_name VARCHAR(255),
+  lane_division_facility_main_category_name VARCHAR(255),
+  lane_division_facility_sub_category_name VARCHAR(255),
+  lane_division_facility_fast_lane_or_general_lane_name VARCHAR(255),
+  lane_division_facility_fast_slow_lane_name VARCHAR(255),
+  lane_division_facility_road_edge_line_name VARCHAR(255),
+  accident_type_and_category_main_category_name VARCHAR(255),
+  accident_type_and_category_sub_category_name VARCHAR(255),
+  cause_classification_main_category_name_primary VARCHAR(255),
+  cause_classification_sub_category_name_primary VARCHAR(255),
+  number_of_deaths_injuries VARCHAR(255),
+  party_order VARCHAR(255),
+  party_classification_category_main_category_name_vehicle VARCHAR(255),
+  party_classification_category_sub_category_name_vehicle VARCHAR(255),
+  party_gender_name VARCHAR(255),
+  party_age_at_time_of_accident VARCHAR(255),
+  protective_equipment_name VARCHAR(255),
+  mobile_phone_or_computer_or_other_similar_device_name VARCHAR(255),
+  party_action_status_main_category_name VARCHAR(255),
+  party_action_status_sub_category_name VARCHAR(255),
+  vehicle_impact_location_main_category_name_initial VARCHAR(255),
+  vehicle_impact_location_sub_category_name_initial VARCHAR(255),
+  vehicle_impact_location_main_category_name_other VARCHAR(255),
+  vehicle_impact_location_sub_category_name_other VARCHAR(255),
+  cause_classification_main_category_name_individual VARCHAR(255),
+  cause_classification_sub_category_name_individual VARCHAR(255),
+  hit_and_run_category_name VARCHAR(255),
+  longitude VARCHAR(255),
+  latitude VARCHAR(255)
+);
+
+-- 欄位長度過長
+-- CREATE TABLE IF NOT EXISTS accidents (
+--   "事件編號" INTEGER,
+--   "發生時間" ,
+--   "事故類別名稱" VARCHAR(255),
+--   "處理單位名稱警局層" VARCHAR(255),
+--   "發生地點" VARCHAR(255),
+--   "天候名稱" VARCHAR(255),
+--   "光線名稱" VARCHAR(255),
+--   "道路類別-第1當事者-名稱" VARCHAR(255),
+--   "速限-第1當事者" VARCHAR(255),
+--   "道路型態大類別名稱" VARCHAR(255),
+--   "道路型態子類別名稱" VARCHAR(255),
+--   "事故位置大類別名稱" VARCHAR(255),
+--   "事故位置子類別名稱" VARCHAR(255),
+--   "路面狀況-路面鋪裝名稱" VARCHAR(255),
+--   "路面狀況-路面狀態名稱" VARCHAR(255),
+--   "路面狀況-路面缺陷名稱" VARCHAR(255),
+--   "道路障礙-障礙物名稱" VARCHAR(255),
+--   "道路障礙-視距品質名稱" VARCHAR(255),
+--   "道路障礙-視距名稱" VARCHAR(255),
+--   "號誌-號誌種類名稱" VARCHAR(255),
+--   "號誌-號誌動作名稱" VARCHAR(255),
+--   "車道劃分設施-分向設施大類別名稱" VARCHAR(255),
+--   "車道劃分設施-分向設施子類別名稱" VARCHAR(255),
+--   "車道劃分設施-分道設施-快車道或一般車道間名稱" VARCHAR(255),
+--   "車道劃分設施-分道設施-快慢車道間名稱" VARCHAR(255),
+--   "車道劃分設施-分道設施-路面邊線名稱" VARCHAR(255),
+--   "事故類型及型態大類別名稱" VARCHAR(255),
+--   "事故類型及型態子類別名稱" VARCHAR(255),
+--   "肇因研判大類別名稱-主要" VARCHAR(255),
+--   "肇因研判子類別名稱-主要" VARCHAR(255),
+--   "死亡受傷人數" VARCHAR(255),
+--   "當事者順位" VARCHAR(255),
+--   "當事者區分-類別-大類別名稱-車種" VARCHAR(255),
+--   "當事者區分-類別-子類別名稱-車種" VARCHAR(255),
+--   "當事者屬-性-別名稱" VARCHAR(255),
+--   "當事者事故發生時年齡" VARCHAR(255),
+--   "保護裝備名稱" VARCHAR(255),
+--   "行動電話或電腦或其他相類功能裝置名稱" VARCHAR(255),
+--   "當事者行動狀態大類別名稱" VARCHAR(255),
+--   "當事者行動狀態子類別名稱" VARCHAR(255),
+--   "車輛撞擊部位大類別名稱-最初" VARCHAR(255),
+--   "車輛撞擊部位子類別名稱-最初" VARCHAR(255),
+--   "車輛撞擊部位大類別名稱-其他" VARCHAR(255),
+--   "車輛撞擊部位子類別名稱-其他" VARCHAR(255),
+--   "肇因研判大類別名稱-個別" VARCHAR(255),
+--   "肇因研判子類別名稱-個別" VARCHAR(255),
+--   "肇事逃逸類別名稱-是否肇逃" VARCHAR(255),
+--   "經度" VARCHAR(255),
+--   "緯度" VARCHAR(255)
+-- );

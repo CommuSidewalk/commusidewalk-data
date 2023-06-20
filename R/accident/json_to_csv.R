@@ -10,11 +10,13 @@ dir.create(OUTPUT_PATH, showWarnings = FALSE)
 #' Rename data.table columns from zh-TW to English
 #'
 #' `cols_zh_to_eng` will rename columns using
-#' `R/accident/field_name_mapping.txt`.
+#' `R/accident/field_name_mapping.txt` and return copied DT
 cols_zh_to_eng <- function (DT) {
+  dt <- copy(DT)
   mapping <- fread("R/accident/field_name_mapping.txt")
   name_map <- setNames(mapping$english_name, mapping$chinese_name)
-  setnames(DT, names(DT), name_map[names(DT)])
+  setnames(dt, names(dt), name_map[names(dt)])
+  return (dt)
 }
 
 fname <- "data/accident/NPA_TMA1_JSON.json"
@@ -31,6 +33,10 @@ DT[, c("發生年度", "發生月份", "發生日期") := NULL]
 # 根據時間和經緯度設定「事件id」
 DT[, "事件編號" := GENERAL_EVENT_PADDING + .GRP, by = c("發生時間", "經度", "緯度")]
 setcolorder(DT, c("事件編號", "發生時間"))
+
+DT[, "死亡人數" := sub("^死亡(\\d+);受傷(\\d+)$", "\\1", 死亡受傷人數)]
+DT[, "受傷人數" := sub("^死亡(\\d+);受傷(\\d+)$", "\\2", 死亡受傷人數)]
+DT[, "死亡受傷人數" := NULL]
 
 
 # 每個事件都一樣
@@ -66,23 +72,24 @@ general_event_cols <- c(
   "事故類型及型態子類別名稱",
   "肇因研判大類別名稱-主要",
   "肇因研判子類別名稱-主要",
-  "死亡受傷人數"
+  "死亡人數",
+  "受傷人數"
 )
 ev_gen <- unique(DT, by = general_event_cols)
 ev_gen <- ev_gen[, append("事件編號", general_event_cols), with = FALSE]
-ev_detail <- DT[,-..general_event_cols]
+ev_detail <- DT[, -..general_event_cols]
 
 fwrite(DT, file = file.path(OUTPUT_PATH, "accidents_zh-TW.csv"))
 fwrite(ev_gen, file = file.path(OUTPUT_PATH, "general_events_zh-TW.csv"))
 fwrite(ev_detail, file = file.path(OUTPUT_PATH, "detail_events_zh-TW.csv"))
 
 # 輸出英文版csv
-cols_zh_to_eng(DT)
-cols_zh_to_eng(ev_gen)
-cols_zh_to_eng(ev_detail)
-fwrite(DT, file = file.path(OUTPUT_PATH, "accidents.csv"))
-fwrite(ev_gen, file = file.path(OUTPUT_PATH, "general_events.csv"))
-fwrite(ev_detail, file = file.path(OUTPUT_PATH, "detail_events.csv"))
+DT_en <- cols_zh_to_eng(DT)
+ev_gen_en <- cols_zh_to_eng(ev_gen)
+ev_detail_en <- cols_zh_to_eng(ev_detail)
+fwrite(DT_en, file = file.path(OUTPUT_PATH, "accidents.csv"))
+fwrite(ev_gen_en, file = file.path(OUTPUT_PATH, "general_events.csv"))
+fwrite(ev_detail_en, file = file.path(OUTPUT_PATH, "detail_events.csv"))
 
 
 # pack_by_colpattern <- function(DT, pattern, pack_colname) {

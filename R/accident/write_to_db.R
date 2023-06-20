@@ -10,8 +10,8 @@ OUTPUT_PATH <- file.path('output', 'accident')
 # util function that drop accidents table
 drop_table <- function (sure = FALSE) {
   if (sure) {
-    dbSendQuery(conn, "DROP TABLE detail_events CASCADE")
-    dbSendQuery(conn, "DROP TABLE general_events CASCADE")
+    dbSendQuery(conn, "DROP TABLE detail_events CASCADE;")
+    dbSendQuery(conn, "DROP TABLE general_events CASCADE;")
   }
 }
 drop_table(F);

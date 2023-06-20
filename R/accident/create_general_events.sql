@@ -31,7 +31,8 @@ CREATE TABLE IF NOT EXISTS general_events (
   accident_type_and_category_sub_category_name VARCHAR(255),
   cause_classification_main_category_name_primary VARCHAR(255),
   cause_classification_sub_category_name_primary VARCHAR(255),
-  number_of_deaths_injuries VARCHAR(255)
+  number_of_deaths SMALLINT,
+  number_of_injuries SMALLINT
 );
 
 -- 欄位長度過長

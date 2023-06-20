@@ -30,6 +30,8 @@ accident_type_and_category_sub_category_name       事故類型及型態子類�
 cause_classification_main_category_name_primary       肇因研判大類別名稱-主要
 cause_classification_sub_category_name_primary       肇因研判子類別名稱-主要
 number_of_deaths_injuries       死亡受傷人數
+number_of_deaths       死亡人數
+number_of_injuries       受傷人數
 party_order       當事者順位
 party_classification_category_main_category_name_vehicle       當事者區分-類別-大類別名稱-車種
 party_classification_category_sub_category_name_vehicle       當事者區分-類別-子類別名稱-車種

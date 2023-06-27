@@ -19,7 +19,7 @@ cols_zh_to_eng <- function (DT) {
   return (dt)
 }
 
-fname <- "data/accident/NPA_TMA1_JSON.json"
+fname <- "data/accident/NPA_TMA2_JSON_1.json"
 df <- jsonlite::fromJSON(fname)
 df <- df$result$records
 DT <- as.data.table(df)

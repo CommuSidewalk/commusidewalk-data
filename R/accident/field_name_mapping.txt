@@ -1,6 +1,6 @@
 english_name   chinese_name
 event_id       事件編號
-occurrence_time       發生時間
+occurrence_date       發生日期
 accident_category_name       事故類別名稱
 handling_unit_name_police_department_level       處理單位名稱警局層
 location       發生地點

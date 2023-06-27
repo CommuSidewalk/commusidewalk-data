@@ -1,0 +1,4 @@
+REVOKE ALL ON DATABASE accident FROM readonly_user;
+GRANT CONNECT ON DATABASE accident TO readonly_user;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO readonly_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO readonly_user;

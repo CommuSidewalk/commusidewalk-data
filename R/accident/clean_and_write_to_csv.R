@@ -53,7 +53,7 @@ read_and_merge_csv <- function (data_dir) {
   # 照順序結合A1、A2一月、A2二月...等等
   for (f in sort(list.files(data_dir, full.names = TRUE))) {
     dt <- fread(f)
-    dt <- head(dt,-2) # 移除最後兩行的資料提供日期、事故類別
+    dt <- head(dt, -2) # 移除最後兩行的資料提供日期、事故類別
     print(f)
     if (!exists("DT")) {
       DT <- dt
@@ -76,7 +76,7 @@ clean_and_transform <- function (DT, gen_ev_padding) {
   # 根據時間和經緯度設定「事件id」
   #   一筆資料是以「當事人」為角度，
   #   然而缺乏當事人之間的聯繫，因此加入事件編號方便識別
-  DT[, "事件編號" := gen_ev_padding + .GRP, by = c("發生日期", "經度", "緯度", "發生地點")]
+  DT[, "事件編號" := .GRP, by = c("發生日期", "經度", "緯度", "發生地點")]
   setcolorder(DT, c("事件編號", "發生日期"))
 
 
@@ -90,13 +90,18 @@ clean_and_transform <- function (DT, gen_ev_padding) {
   DT[, "受傷人數" := sub("^死亡(\\d+);受傷(\\d+)$", "\\2", 死亡受傷人數)]
   DT[, "死亡受傷人數" := NULL]
 
+  if (gen_ev_padding != 0) {
+    last_rown_duplicates_event <- tail(which(DT[, 事件編號 == gen_ev_padding]), 1)
+    DT <- DT[last_rown_duplicates_event + 1:.N]
+  }
+
   DT
 }
 
 write_cleaned_data_to_csv <- function (DT, output_dir) {
   ev_gen <- unique(DT, by = "事件編號")
   ev_gen <- ev_gen[, append("事件編號", GEN_EV_COLS), with = FALSE]
-  ev_detail <- DT[, -..GEN_EV_COLS]
+  ev_detail <- DT[,-..GEN_EV_COLS]
 
   # 輸出中文版csv
   fwrite(DT, file = file.path(output_dir, "accidents_zh-TW.csv"))
@@ -112,6 +117,7 @@ write_cleaned_data_to_csv <- function (DT, output_dir) {
   fwrite(ev_detail_en, file = file.path(output_dir, "detail_events.csv"))
 }
 
+# 現在想想他不是padding，而是最後一個event_id
 get_padding <- function() {
   # general_events_padding
   # event_id會由此開始 +1, e.g. GENERAL_EVENT_PADDING <- 10,
@@ -121,10 +127,16 @@ get_padding <- function() {
   result <-
     dbGetQuery(conn,
                "SELECT event_id FROM general_events ORDER BY event_id DESC LIMIT 1;")
-  result$event_id + 1
+
+  if (length(result$event_id) == 0) {
+    padding <- 0
+  } else {
+    padding <- result$event_id[1]
+  }
 }
 
 clean_and_write_to_csv <- function (auto_padding = FALSE) {
+  print("start clean and write to csv...")
   if (auto_padding) {
     gen_ev_padding <- get_padding()
   } else{
@@ -133,4 +145,5 @@ clean_and_write_to_csv <- function (auto_padding = FALSE) {
   DT <- read_and_merge_csv(DATA_PATH)
   cleaned_DT <- clean_and_transform(DT, gen_ev_padding)
   write_cleaned_data_to_csv(cleaned_DT, OUTPUT_PATH)
+  print("done!")
 }

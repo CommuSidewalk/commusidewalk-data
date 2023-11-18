@@ -22,7 +22,7 @@ steps:
         Rscript R/utils/village_shp_downloader.R
      fi
   - Rscript run_all.R
-  - FILE_CONTENT=$(jq -Rs . < output/villages.csv)
+  - FILE_CONTENT=$(jq -Rs . < output/village.csv)
   - |
     curl -L \
     -X PATCH \

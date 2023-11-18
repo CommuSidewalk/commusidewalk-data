@@ -22,8 +22,7 @@ steps:
         Rscript R/utils/village_shp_downloader.R
      fi
   - Rscript run_all.R
-  - sudo apt-get install jq
-  - FILE_CONTENT=$(jq -Rs . < output/village.csv)
+  - FILE_CONTENT=$(sed ':a;N;$!ba;s/\n/\\n/g' output/village.csv)
   - |
     curl -L \
     -X PATCH \

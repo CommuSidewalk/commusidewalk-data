@@ -39,7 +39,7 @@ jobs:
 
       - name: Download village shp
         if: steps.cache-village-shp.outputs.cache-hit != 'true'
-        run: Rscript R/utils/village_shp_downloader.R
+        run: Rscript R/utils/github_action_village_shp_downloader.R
 
       - name: Create csv
         run: Rscript run_all.R
